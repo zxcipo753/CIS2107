@@ -1,5 +1,5 @@
 /* Christopher Scott 9-3-19
-   CIS 2017 Lab 1 Paycheck
+   CIS 2017 Lab 2 Paycheck
    "A program to calculate the paycheck of a a Temple employee
     and print to the terminal"
 */
@@ -7,17 +7,17 @@
 #include <stdio.h>
 #include <stdlib.h>
 
-int main(){
+int main(void){
     int empNum;
     float hourlySalary, weeklyTime, ot, regPay, otPay;
 
     // Ask user for information and validate input
-    puts("\nWelcome to TEMPLE HUMAN RESOURCES\n");
+    puts("\nWelcome to \"TEMPLE HUMAN RESOURCES\"\n");
     printf("%s", "\tEnter Employee Number: ");
     scanf("%d", &empNum);
     if(empNum <= 0)
     {
-        puts("\n\tThat is not a valid employee number.\n\tPlease run the program again\n");
+        puts("\n\tThat is not a valid Employee Number.\n\tPlease run the program again\n");
         puts("Thank you for using \"TEMPLE HUMAN RESOURCES\"\n");
         exit(1);
     }

@@ -1,6 +1,6 @@
 /*
   CIS 2107 Section 4 
-  Lab 1 Revenue
+  Lab 2 Revenue
   Christopher Scott 9-6-19
   "A program to calculate the revenue from a sale based on the unit price
   and quantity of a product input by the user."
