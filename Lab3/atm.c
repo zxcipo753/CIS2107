@@ -1,18 +1,29 @@
 /* CIS2107 Section 4 Lab 3 "ATM"
+   Christopher Scott 9/13/19
    "A program to implement the functions of an ATM"
+   Note: Limits and balances are declared as floats with the spirit that 
+   currency is inherently a fractional quantity, despite all transactions being conducted using whole numbers.
+
 */
 #include <stdio.h>
 #include <stdlib.h>
 
 #define PIN 3014
 #define LOCKOUT 3
+#define TRANERROR -1
 
 void checkBalance(float balance);
-void withdrawal(float *);
-void deposit(float *);
+void withdrawal(float *, float *);
+void deposit(float *, float *);
 void quit(int, int);
 
 int main(void){
+    float withLimit = 1000;
+    float *wL; 
+    wL = &withLimit;
+    float depLimit = 10000;
+    float *dL;
+    dL = &depLimit;
     float balance = 5000;
     float *b;
     b = &balance;
@@ -21,8 +32,9 @@ int main(void){
     unsigned int tries = 0;
     unsigned int t = 0;    
 
+    // Begin Welcome Screen
     puts("\nWelcome to the ATM!\n");
-    while(tries < LOCKOUT)
+    while(tries < LOCKOUT) //User has 3 tries to enter the correct pin
     {
        printf("%s", "Please enter your pin: \n");
        scanf("%u", &pin);
@@ -37,8 +49,10 @@ int main(void){
            printf("Incorrect pin, %d tries remaining\n", (LOCKOUT - ++tries));
        }
     }
-    if(pin != PIN && tries >= LOCKOUT)
-        quit(2, t);
+    if(pin != PIN && tries >= LOCKOUT) // User has entered the incorrect pin too many times
+        quit(2, t); // Quit with error message 2
+
+    // Main Menu loop
     while(access)
     {
         printf("%s", "\n\tPress a number on the keypad to select a function\n"); 
@@ -58,11 +72,11 @@ int main(void){
                 t++;
                 break;
             case(2):
-                withdrawal(b);
+                withdrawal(b, wL);
                 t++;
                 break;
             case(3):
-                deposit(b);
+                deposit(b, dL);
                 t++;
                 break;
             case(4):
@@ -74,48 +88,115 @@ int main(void){
     }    
 }
 
+// Exit the program, giving a message based on the exit condition
+// Transaction amt of -1 indicates a fatal error coming from withdrawal() or deposit()
 void quit(int code, int t){
     switch(code){
         case(0):
             printf("%s", "\nThank you for using the ATM\n");
-            printf("%d transactions completed", t);
+            printf("%d transactions completed\n", t);
             exit(0);
             break;          
         case(1): default:
             printf("%s", "\n Something went wrong.\nThank you for using the ATM\n");
-            printf("%d transactions completed", t);
+            printf("%d transactions completed/n", t);
             exit(1);
             break;
         case(2):
-            printf("%s", "\n Incorrect pin entered too many times");
+            printf("%s", "\n Incorrect pin entered too many times\n");
+            exit(1);
+            break;
+        case(3):
+            printf("%s", "\n Amount can not be validated\n");
+            exit(1);
+            break;
+        case(4):
+            printf("%s", "\n Daily limit for this transaction is exceeded\n");
             exit(1);
             break;
     }
 }
-
+// Print the user's balance
 void checkBalance(float balance)
 {
     printf("Your balance is: %.2f\n", balance);
 }
 
-void withdrawal(float *b)
+// Withdrawl an amount from the user's balance 
+void withdrawal(float *b, float *wL)
 {
-    unsigned int amt;
+    unsigned int amt = 0;
+    unsigned int tries = 0;
+    unsigned int res;
+    if(*wL <= 0) // daily transaction limit exceeded
+        quit(4, TRANERROR);
     printf("%s", "\tYou can withdrawal up to $1000/day\n");
-    printf("%s", "\tEnter withdrawal amount in $20 increments: ");
-    scanf("%u", &amt);
-    *b -= amt;
-    printf("%s", "\n\tPrinting receipt...\n");
-    printf("%s", "\tReturning to main menu\n");
+    do
+    {
+        printf("%s", "\tEnter withdrawal amount in $20 increments: ");
+        scanf("%u", &amt);
+        if (amt % 20 != 0)
+        {
+            printf("%s", "\n\tWithdrawal amount must be in $20 increments\n");
+            tries++;
+        }
+        else if(amt > *b)
+        {
+            printf("%s", "\n\tWithdrawal amount cannot exceed balance\n");
+            tries++;
+        }
+    } while (tries < LOCKOUT && amt % 20 != 0 || amt > *b);
+    
+    if( tries >= LOCKOUT)
+        quit(3, TRANERROR);
+    
+    if(*wL >= amt)
+    {
+        *wL -= amt; // decrease the daily withdrawal limit
+        *b -= amt; // decrease balance by amt
+        printf("%s", "\tWould you like a receipt(1 = yes, 2 = no)\n");
+        scanf("%u", &res);
+        if(res == 1)
+            printf("%s", "\n\tPrinting receipt...\n");
+        printf("%s", "\tReturning to main menu\n");
+    }
+    else
+        printf("%s", "\tThis transaction exceeds the daily limit, returning to main menu\n");
 }
 
-void deposit(float *b)
+// Deposit an amount into the user's balance
+void deposit(float *b, float *dL)
 {
-    unsigned int amt;
-    printf("%s", "\tYou can deposit up to $10000/day");
-    printf("%s", "\tEnter depost amount: ");
-    scanf("%u", &amt);
-    *b += amt;
-    printf("%s", "\n\tPrinting receipt...\n");
-    printf("%s", "\tReturning to main menu\n");
+    unsigned int amt = 0;
+    unsigned int tries = 0;
+    unsigned int res;
+    if(*dL <= 0) // daily transaction limit exceeded
+        quit(4, TRANERROR);
+    printf("%s", "\tYou can deposit up to $10000/day\n");
+    do
+    {     
+        printf("%s", "\tEnter deposit amount: ");
+        scanf("%u", &amt);
+        if(amt > *dL)
+            printf("%s", "\n\tDeposit exceeds daily limit\n");
+        else if( amt == 0)
+            printf("%s", "\n\tThat is not a valid amount.\n");
+        tries++;
+    } while(tries < LOCKOUT && !amt ); // 3 tries
+
+    if(tries >= LOCKOUT)
+        quit(3, TRANERROR);
+    
+    if(amt <= *dL) 
+    {
+        *dL -= amt; // decrease the daily deposit limit
+        *b += amt; // increase balance by amt
+        printf("%s", "Would you like a receipt(1 = yes, 2 = no)\n");
+        scanf("%u", &res);
+        if(res == 1)
+            printf("%s", "\n\tPrinting receipt...\n");
+        printf("%s", "\tReturning to main menu\n");
+    }
+    else
+        printf("%s", "\tThis transaction exceeds the daily limit, returning to main menu\n");
 }
