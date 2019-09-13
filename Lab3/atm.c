@@ -4,8 +4,8 @@
 #include <stdio.h>
 #include <stdlib.h>
 
-#define PIN = 3014;
-#define LOCKOUT = 3;
+#define PIN 3014
+#define LOCKOUT 3
 
 void checkBalance(float balance);
 void withdrawal(float *);
@@ -14,34 +14,43 @@ void quit(int, int);
 
 int main(void){
     float balance = 5000;
-    float b = &balance;
-    unsigned int pins, t;
-    unsigned int access = tries = 0;
-    
-    puts("\nWelcome to the ATM!\nPlease input your pin: ");
+    float *b;
+    b = &balance;
+    unsigned int pin = 0; 
+    unsigned int access = 0;
+    unsigned int tries = 0;
+    unsigned int t = 0;    
+
+    puts("\nWelcome to the ATM!\n");
     while(tries < LOCKOUT)
     {
+       printf("%s", "Please enter your pin: \n");
        scanf("%u", &pin);
        if(pin == PIN)
+       {
+           printf("%s", "Access Granted\n");
            access = 1; 
            break;
+       }
        else
-           tries++;
+       {
+           printf("Incorrect pin, %d tries remaining\n", (LOCKOUT - ++tries));
+       }
     }
     if(pin != PIN && tries >= LOCKOUT)
         quit(2, t);
     while(access)
     {
-        printf("%s", "\tPress a number on the keypad to select a function\n"); 
-        printf("%s", "\t------Main Menu------\n");
-        printf("\t1%18s", "Check Balance\n");
-        printf("\t2%18s", "Cash Withdrawal\n");
-        printf("\t3%18s", "Cash Deposit\n");
-        printf("\t4%18s", "Quit\n");
+        printf("%s", "\n\tPress a number on the keypad to select a function\n"); 
+        printf("%s", "\n\t------Main Menu------\n");
+        printf("\t1%21s", "Check Balance\n");
+        printf("\t2%21s", "Cash Withdrawal\n");
+        printf("\t3%21s", "Cash Deposit\n");
+        printf("\t4%21s", "Quit\n");
         printf("%s", ": \n");
 
         unsigned int choice;
-        scanf("u", &choice);
+        scanf("%u", &choice);
         
         switch(choice){
             case(1):
@@ -49,12 +58,12 @@ int main(void){
                 t++;
                 break;
             case(2):
-                withdrawal(*b);
-                t++
+                withdrawal(b);
+                t++;
                 break;
             case(3):
-                deposit(*b);
-                t++
+                deposit(b);
+                t++;
                 break;
             case(4):
                 quit(0, t);
@@ -80,7 +89,7 @@ void quit(int code, int t){
         case(2):
             printf("%s", "\n Incorrect pin entered too many times");
             exit(1);
-            break:
+            break;
     }
 }
 
@@ -96,17 +105,17 @@ void withdrawal(float *b)
     printf("%s", "\tEnter withdrawal amount in $20 increments: ");
     scanf("%u", &amt);
     *b -= amt;
-    printf("%s", "\n\tPrinting receipt...");
-    print("%s", "\n\tReturning to main menu");
+    printf("%s", "\n\tPrinting receipt...\n");
+    printf("%s", "\tReturning to main menu\n");
 }
 
-void deposit(float *b);
+void deposit(float *b)
 {
     unsigned int amt;
     printf("%s", "\tYou can deposit up to $10000/day");
     printf("%s", "\tEnter depost amount: ");
     scanf("%u", &amt);
     *b += amt;
-    printf("%s", "\n\tPrinting receipt...");
-    print("%s", "\n\tReturning to main menu");
+    printf("%s", "\n\tPrinting receipt...\n");
+    printf("%s", "\tReturning to main menu\n");
 }
