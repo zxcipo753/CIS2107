@@ -1,8 +1,8 @@
 /* CIS2107 Section 4 Lab 3 "ATM"
    Christopher Scott 9/13/19
    "A program to implement the functions of an ATM"
-   Note: Limits and balances are declared as floats with the spirit that 
-   currency is inherently a fractional quantity, despite all transactions being conducted using whole numbers.
+   Note: Limits and balances are declared as floats in the spirit that 
+   currency is a fractional quantity, despite all transactions being conducted using whole numbers.
 
 */
 #include <stdio.h>
@@ -125,7 +125,7 @@ void checkBalance(float balance)
 // Withdrawl an amount from the user's balance 
 void withdrawal(float *b, float *wL)
 {
-    unsigned int amt = 0;
+    int amt = 0;
     unsigned int tries = 0;
     unsigned int res;
     if(*wL <= 0) // daily transaction limit exceeded
@@ -134,20 +134,32 @@ void withdrawal(float *b, float *wL)
     do
     {
         printf("%s", "\tEnter withdrawal amount in $20 increments: ");
-        scanf("%u", &amt);
-        if (amt % 20 != 0)
+        scanf("%d", &amt);       
+        if( amt > 0 && amt % 20 == 0 && amt < *b) // input is valid
+        {
+            printf("%s", "\n\tProcessing transaction...\n");
+            break;
+        }
+
+        // test specific cases and give appropriate error messages
+        else if (amt <= 0)
+        {
+            printf("%s", "\n\tThat is not a valid withdrawal amount\n");
+        }
+        else if (amt % 20 != 0)
         {
             printf("%s", "\n\tWithdrawal amount must be in $20 increments\n");
-            tries++;
         }
         else if(amt > *b)
-        {
+        {    
             printf("%s", "\n\tWithdrawal amount cannot exceed balance\n");
-            tries++;
         }
-    } while (tries < LOCKOUT && amt % 20 != 0 || amt > *b);
+        tries++;
+
+    } while (tries < LOCKOUT); // 3 tries
+        
     
-    if( tries >= LOCKOUT)
+    if( tries >= LOCKOUT)  // Too many invalid inputs, quit the program
         quit(3, TRANERROR);
     
     if(*wL >= amt)
@@ -160,34 +172,49 @@ void withdrawal(float *b, float *wL)
             printf("%s", "\n\tPrinting receipt...\n");
         printf("%s", "\tReturning to main menu\n");
     }
-    else
+    else if (*wL < amt)
         printf("%s", "\tThis transaction exceeds the daily limit, returning to main menu\n");
+    else
+        printf("%s", "\tThat is not a valid amount, returning to main menu\n");
 }
 
 // Deposit an amount into the user's balance
 void deposit(float *b, float *dL)
 {
-    unsigned int amt = 0;
+    int amt = 0;
     unsigned int tries = 0;
     unsigned int res;
+    int valid;
     if(*dL <= 0) // daily transaction limit exceeded
         quit(4, TRANERROR);
     printf("%s", "\tYou can deposit up to $10000/day\n");
     do
     {     
         printf("%s", "\tEnter deposit amount: ");
-        scanf("%u", &amt);
-        if(amt > *dL)
-            printf("%s", "\n\tDeposit exceeds daily limit\n");
-        else if( amt == 0)
+        scanf("%d", &amt);
+        if( amt > 0 && amt <= *dL) // input is valid
+        {
+            printf("%s", "\n\tProcessing transaction...\n");           
+            break;
+        }
+        else if(amt <= 0)
+        {
             printf("%s", "\n\tThat is not a valid amount.\n");
+        }
+        else if(amt > *dL)
+        {
+            printf("%s", "\n\tDeposit exceeds daily limit\n");
+        }
         tries++;
-    } while(tries < LOCKOUT && !amt ); // 3 tries
 
-    if(tries >= LOCKOUT)
+    } while(tries < LOCKOUT); // 3 tries
+
+    if(tries >= LOCKOUT) // Too many invalid inputs, quit the program
         quit(3, TRANERROR);
     
-    if(amt <= *dL) 
+    if(amt > *dL)
+        printf("%s", "\tThis transaction exceeds the daily limit, returning to main menu\n");
+    else if(amt <= *dL) 
     {
         *dL -= amt; // decrease the daily deposit limit
         *b += amt; // increase balance by amt
@@ -198,5 +225,5 @@ void deposit(float *b, float *dL)
         printf("%s", "\tReturning to main menu\n");
     }
     else
-        printf("%s", "\tThis transaction exceeds the daily limit, returning to main menu\n");
+        printf("%s", "\tThat is not a valid amount, returning to main menu\n");
 }
