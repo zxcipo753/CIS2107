@@ -8,41 +8,50 @@
 #include <stdlib.h>
 
 
-int max(int rows, int cols, int[rows][cols]);
-int rowSum(int rows, int cols, int[rows][cols], int);
-int columnSum(int rows, int cols, int[rows][cols], int);
-int isSquare(int, int);
-void displayOutputs(int rows, int cols, int[rows][cols]);
+int max( size_t rows, size_t  cols, int[rows][cols]);
+int rowSum(size_t rows, size_t cols, int[rows][cols], size_t);
+int columnSum(size_t rows, size_t cols, int[rows][cols], size_t);
+int isSquare(size_t, size_t);
+void displayOutputs(size_t rows, size_t cols, int[rows][cols]);
 
 void main(){
-    int rows, cols;
+    size_t rows, cols;
 
     // Get array size
     printf("%s", "Let's create a 2Dim array!\n");
     printf("%s", "\n\tHow many rows? ");
-    scanf("%d", &rows);
+    scanf("%u", &rows);
     printf("%s", "\tHow many columns? ");
-    scanf("%d", &cols);
-//    puts("");
+    scanf("%u", &cols);
 
+    puts("");
+
+    // Get array values from user
     int test[rows][cols];
     for(int i = 0; i < rows; i++){
         for(int j = 0; j < cols; j++){
-            printf( "\tenter [%d][%d]: ", i, j);
+            printf( "\tenter [%u][%u]: ", i, j);
             scanf("%d", &test[i][j]);
         }
     }
 
     puts("");   
     
-    printf("Sum of row 1 = %d\n", rowSum(rows, cols, test, 0));
-    printf("Sum of row 2 = %d\n", rowSum(rows, cols, test, 1));
+    // output row sums
+    for(size_t i = 0; i < rows; i++){
+        printf("Sum of row %u = %d\n", i + 1,  rowSum(rows, cols, test, i));
+    }
+
+    puts("");
+    
+    // output column sums
+    for(size_t i = 0; i < cols; i++){
+        printf("Sum of column %u = %d\n", i + 1, columnSum(rows, cols, test, i));
+    }
 
     puts("");
 
-    printf("Sum of column 1 = %d\n", columnSum(rows, cols, test, 0));
-    printf("Sum of column 2 = %d\n", columnSum(rows, cols, test, 1));
-    printf("Sum of column 3 = %d\n", columnSum(rows, cols, test, 2));
+    printf("Maximum value is %d\n", max(rows, cols, test));
 
     puts("");
 
@@ -55,10 +64,11 @@ void main(){
     printf("%s", "Here is your 2Dim array:\n");
 
     displayOutputs(rows, cols, test);
-    
+    puts("");
 }
 
-int max(int rows, int cols, int A[][cols]){
+// return the maximum value in the array
+int max(size_t rows, size_t cols, int A[][cols]){
     int max = A[0][0];
     for(size_t i = 0; i < rows; i++)
     {
@@ -71,25 +81,29 @@ int max(int rows, int cols, int A[][cols]){
     return max;
 }
 
-int rowSum(int rows, int cols, int A[][cols], int rowToSum){
+// Sum the values in a specified row
+int rowSum(size_t rows, size_t cols, int A[][cols], size_t rowToSum){
     int sum = 0;
     for(size_t i = 0; i < cols; i++)
         sum += A[rowToSum][i];
     return sum;
 }
 
-int columnSum(int rows, int cols, int A[][cols], int colToSum){
+// Sum the values in a specified column
+int columnSum(size_t rows, size_t cols, int A[][cols], size_t colToSum){
     int sum = 0;
     for(size_t i = 0; i < rows; i++)
        sum += A[i][colToSum];
     return sum;
 }
 
-int isSquare(int rowsize, int colsize){
+// Determine if the array is square
+int isSquare(size_t rowsize, size_t colsize){
     return rowsize == colsize;
 }
 
-void displayOutputs(int rows, int cols, int A[][cols]){
+// Print the array
+void displayOutputs(size_t rows, size_t cols, int A[][cols]){
     for(size_t i = 0; i < rows; i++)
     {
         printf("%s", "[");
