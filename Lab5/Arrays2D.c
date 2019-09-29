@@ -1,4 +1,4 @@
-/* CIS2107 Section 4 Lab 5 "2D Arrays Processing"
+/* CIS2107 Section 4 Lab 5 "2D Arrays Processing - Arrays2D"
    Christopher Scott
    "A collection of functions to perform operations on two-dimensional arrays"
 */
@@ -8,21 +8,21 @@
 #include <stdlib.h>
 
 
-int max( size_t rows, size_t  cols, int[rows][cols]);
-int rowSum(size_t rows, size_t cols, int[rows][cols], size_t);
-int columnSum(size_t rows, size_t cols, int[rows][cols], size_t);
-int isSquare(size_t, size_t);
-void displayOutputs(size_t rows, size_t cols, int[rows][cols]);
+int max( int rows, int cols, int[rows][cols]);
+int rowSum(int rows, int cols, int[rows][cols], int);
+int columnSum(int rows, int cols, int[rows][cols], int);
+int isSquare(int, int);
+void displayOutputs(int rows, int cols, int[rows][cols]);
 
 void main(){
-    size_t rows, cols;
+    int rows, cols;
 
     // Get array size
     printf("%s", "Let's create a 2Dim array!\n");
     printf("%s", "\n\tHow many rows? ");
-    scanf("%u", &rows);
+    scanf("%d", &rows);
     printf("%s", "\tHow many columns? ");
-    scanf("%u", &cols);
+    scanf("%d", &cols);
 
     puts("");
 
@@ -39,7 +39,7 @@ void main(){
     
     // output row sums
     for(size_t i = 0; i < rows; i++){
-        printf("Sum of row %u = %d\n", i + 1,  rowSum(rows, cols, test, i));
+        printf("Sum of row %u = %d\n", (i + 1),  rowSum(rows, cols, test, i));
     }
 
     puts("");
@@ -68,7 +68,7 @@ void main(){
 }
 
 // return the maximum value in the array
-int max(size_t rows, size_t cols, int A[][cols]){
+int max(int rows, int cols, int A[][cols]){
     int max = A[0][0];
     for(size_t i = 0; i < rows; i++)
     {
@@ -82,7 +82,7 @@ int max(size_t rows, size_t cols, int A[][cols]){
 }
 
 // Sum the values in a specified row
-int rowSum(size_t rows, size_t cols, int A[][cols], size_t rowToSum){
+int rowSum(int rows, int cols, int A[][cols], int rowToSum){
     int sum = 0;
     for(size_t i = 0; i < cols; i++)
         sum += A[rowToSum][i];
@@ -90,7 +90,7 @@ int rowSum(size_t rows, size_t cols, int A[][cols], size_t rowToSum){
 }
 
 // Sum the values in a specified column
-int columnSum(size_t rows, size_t cols, int A[][cols], size_t colToSum){
+int columnSum(int rows, int cols, int A[][cols], int colToSum){
     int sum = 0;
     for(size_t i = 0; i < rows; i++)
        sum += A[i][colToSum];
@@ -98,12 +98,12 @@ int columnSum(size_t rows, size_t cols, int A[][cols], size_t colToSum){
 }
 
 // Determine if the array is square
-int isSquare(size_t rowsize, size_t colsize){
+int isSquare(int rowsize, int colsize){
     return rowsize == colsize;
 }
 
 // Print the array
-void displayOutputs(size_t rows, size_t cols, int A[][cols]){
+void displayOutputs(int rows, int cols, int A[][cols]){
     for(size_t i = 0; i < rows; i++)
     {
         printf("%s", "[");
