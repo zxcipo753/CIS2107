@@ -5,22 +5,26 @@
 #include <stdlib.h>
 #include <stdio.h>
 #include <time.h>
+#include <unistd.h>
 
-int generateNum()
-void advancePositions(unsigned int *, unsigned int *);
-void printPositions(unsigned int *, unsigned int *);
+int generateNum(void);
+void advancePositions(unsigned int *t, unsigned int *h);
+void printPositions(unsigned int *t, unsigned int *h);
 
 int main(){
     unsigned int tortoise, hare;
     tortoise = hare = 1;
-    unsigned int *tptr = &tortoise;
-    unsigned int *hptr = &hare;
+    unsigned int *tptr, *hptr;
+    tptr = &tortoise;
+    hptr = &hare;
     
+    puts("ON YOUR MARK, GET SET");    
     puts("BANG !!!!\nAND THEY'RE OFF !!!!!");
+
     while(tortoise < 70 && hare < 70){
         advancePositions(tptr, hptr);
         printPositions(tptr, hptr);
-        sleep(2);
+        sleep(1);
     }
 
     if(tortoise >= 70 && hare >= 70)
@@ -32,21 +36,60 @@ int main(){
 
     return 0;
 }
-
-int generateNum(){
-    srand(time(null));
+// generate a random number between 1 and 10, inclusive
+int generateNum(void){
+    srand(time(NULL));
     return (rand() % 10 + 1);
+}
 
-void advancePositions(unsigned int *a, unsigned int *b){
+// advance the positions of the tortoise and hare based on a random movement
+void advancePositions(unsigned int *t, unsigned int *h){
     // move tortoise
     int move = generateNum();
     if(move >= 1 && move <= 5) // fast plod (50%)
-        *a += 3;
+        *t += 3;
     else if(move >= 6 && move <= 8) // slow plod (30%)
-        *a += 1;
+        *t += 1;
     else{ // slip
-        if(*a > 6)
-            *a -= 6;
+        if(*t > 6)
+            *t -= 6;
         else
-            *a = 1;
+            *t = 1;
+    }
+    // move hare
+    move = generateNum();
+    if(move == 1 || move == 2) // big hop
+        *h += 9;
+    else if( move == 3){ // big slip
+        if(*h > 12)
+          *h -= 12;
+        else
+          *h = 1;
+    }
+    else if(move >= 4 && move <=6) // small hop
+        *h += 1;
+    else if(move == 7 || move == 8){ // small slip
+        if(*h > 2)
+            *h -= 2;
+        else
+            *h = 1;
+   }
+   // don't need to do anything for sleep
 }
+
+// print out the current positions on the race course
+void printPositions(unsigned int *t, unsigned int *h){
+    for(size_t i = 1; i < 71; i++){
+        if(i == *t && i == *h)
+            printf("%s", "OUCH!!!");
+        else if(i == *t)
+            printf("%s", "T");
+        else if(i == *h)
+            printf("%s", "H");
+        else
+            putchar(' ');
+     }
+     putchar('\n');
+} 
+    
+
