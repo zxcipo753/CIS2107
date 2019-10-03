@@ -8,15 +8,14 @@
 #include <unistd.h>
 
 int generateNum(void);
-void advancePositions(unsigned int *t, unsigned int *h);
-void printPositions(unsigned int *t, unsigned int *h);
+void advancePositions(unsigned int *const t, unsigned int *const h);
+void printPositions(unsigned int *const t, unsigned int *const h);
 
 int main(){
     unsigned int tortoise, hare;
     tortoise = hare = 1;
-    unsigned int *tptr, *hptr;
-    tptr = &tortoise;
-    hptr = &hare;
+    unsigned int *const tptr = &tortoise;
+    unsigned int *const hptr = &hare;
     
     puts("ON YOUR MARK, GET SET");    
     puts("BANG !!!!\nAND THEY'RE OFF !!!!!");
@@ -43,7 +42,7 @@ int generateNum(void){
 }
 
 // advance the positions of the tortoise and hare based on a random movement
-void advancePositions(unsigned int *t, unsigned int *h){
+void advancePositions(unsigned int *const t, unsigned int *const h){
     // move tortoise
     int move = generateNum();
     if(move >= 1 && move <= 5) // fast plod (50%)
@@ -78,7 +77,7 @@ void advancePositions(unsigned int *t, unsigned int *h){
 }
 
 // print out the current positions on the race course
-void printPositions(unsigned int *t, unsigned int *h){
+void printPositions(unsigned int *const t, unsigned int *const h){
     for(size_t i = 1; i < 71; i++){
         if(i == *t && i == *h)
             printf("%s", "OUCH!!!");
