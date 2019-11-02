@@ -10,6 +10,8 @@
 int main(){
     char test1[100];
     char test2[100];
+    char test3[100];
+    char *test2d[5];
     char *ptr = NULL;
     int n = 0;
 
@@ -161,5 +163,49 @@ int main(){
     free(ptr);
     ptr = NULL;
 
+    // Test str_connect
+    test2d[0] = "Washington";
+    test2d[1] = "Adams";
+    test2d[2] = "Jefferson";
+    test2d[3] = "Madison";
+    test2d[4] = "Monroe";
+    puts("\nTesting function str_connect...");
+    n = 3;
+    alpha = '+';
+    ptr = str_connect(test2d, n, alpha);
+    printf("\tResult is \"%s\"\n", ptr);
+    free(ptr);
+    ptr = NULL;
+    
+    // Test rm_empties
+    char *words[] = {"cat", "rat", "", "bat", "", NULL};
+    puts("\nTesting rm_empties...");
+    printf("%s", "\tBefore:");
+    char **t = words;
+    while(*t != NULL){
+        printf(" \"%s\"", *t);
+        t++;
+    }
+    puts("");
+    rm_empties(words);
+    t = words;
+    printf("%s", "\tAfter:");
+    while(*t != NULL){
+        printf(" \"%s\"", *t);
+        t++;
+    }
+    puts("");
+    
+    // Test str_chop_all
+    strcpy(test1, "I am ready for a nice vacation");
+    alpha = ' ';
+    puts("\nTesting str_chop_all");
+    char **tokens = str_chop_all(test1, alpha); 
+    printf("\tResult with args *s=\"%s\", c='%c':\n\t", test1, alpha);
+    while(*tokens != NULL){
+        printf(" \"%s\"", *tokens);
+        tokens++;
+    }
+    puts("");
     return 0;
-} 
+}
