@@ -6,10 +6,18 @@
 
 // returns the index of the first instance of character n in string h, or -1 if not found
 int find(char *h, char *n){
-  int i = 0;
-  for(;*(h + i) != '\0';i++){
-      if(*(h + i) == *n)
-          return i;
-  }
-  return -1;
+    int i = 0;
+    int loc = -1;
+    for(;*(h + i) != '\0'; i++){
+        if(*(h + i) == *n){  // current character matches first from substring
+            loc = i;
+            for(int j = 1; *(n+j) != '\0'; j++){ // check the remainder of substring
+                if(*(h + i + j) != *(n + j))
+                    loc = -1;
+            }
+            if(loc = i)
+                return loc;
+        }
+    }
+    return loc;
 }

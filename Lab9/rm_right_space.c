@@ -3,15 +3,24 @@
    Christopher Scott
 */
 #include "my_string.h"
-
+#include <ctype.h>
 
 void rm_right_space(char *s){
-    size_t count = 0;
+    int count = 0;
     // Count letters
-    for(size_t i = 0; *(s + i) != '\0'; i++, count++);
-            
-    --count;
-    while(*(s + count) != ' ' || *(s + count) != '\n' || *(s + count) != '\t')
+    for(; *(s + count) != '\0'; count++);
+
+     --count; // *(s + count) is currently pointing at '\0', so decrement
+
+    while(isspace(*(s + count))){
         --count;
-    *(s + count) = '\0';
+    }
+    *(s + count + 1) = '\0';
+    return;
 }
+
+
+
+
+
+

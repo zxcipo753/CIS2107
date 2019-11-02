@@ -3,8 +3,10 @@
    Christopher Scott
 */
 #include "my_string.h"
+#include <stdlib.h>
 
 //  Returns a new string with alternating letters from each of the argument strings
+//  User has resposibility to free the dynamically allocated memory
 char *str_zip(char *s1, char *s2){
     int s1_len = 0;
     int s2_len = 0;
@@ -19,7 +21,7 @@ char *str_zip(char *s1, char *s2){
     else if(s1_len != 0 && s2_len == 0)
         return s1;
     else{
-        char newString[s1_len + s2_len];
+        char *newString = (char *) malloc(sizeof(char) *(s1_len + s2_len));
         int i = 0;
         if(s1_len == s2_len){ // strings are same length, alternate letters from each
             for(; i < s1_len + s2_len; i++)
