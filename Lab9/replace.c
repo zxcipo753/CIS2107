@@ -27,8 +27,10 @@ char *replace(char *s, char *pat, char *rep){
         t += loc + pat_len;
     }
     
-    if( num_pat != 0)
-        ptr = (char *)malloc(sizeof(char) * (s_len - (num_pat * pat_len) + (num_pat * rep_len)));
+    if( num_pat != 0){
+        if((ptr = (char *)malloc(sizeof(char) * (s_len - (num_pat * pat_len) + (num_pat * rep_len)))) == NULL)
+            return ptr;
+    }
     else
         return ptr;
     // copy string and replace pat with rep

@@ -12,80 +12,104 @@ int main(){
     char test2[100];
     char test3[100];
     char *test2d[5];
+    char *nullstring = NULL;
     char *ptr = NULL;
     int n = 0;
 
     // Test all_letters
-    char str1[] = "ALLUPPER";
-    char str2[] = "allower";
-    char str3[] = "a Mix of Cases";
+    strcpy(test1, "allLetters");
+    strcpy(test2, "hasd1g2ts");
     puts("\nTesting function all_letters...");
-    printf("\tResult with arg \"%s\": %d\n", str1, all_letters(str1)); 
-    printf("\tResult with arg \"%s\": %d\n", str2, all_letters(str2));
-    printf("\tResult with arg \"%s\": %d\n", str3, all_letters(str3));
+    printf("\tResult with arg \"%s\": %d\n", test1, all_letters(test1)); 
+    printf("\tResult with arg \"%s\": %d\n", test2, all_letters(test2));
     
     // Test num_in_range
-    char *s = "Lazy Brown Fox";
+    strcpy(test1, "Lazy Brown Fox");
     char arg1 = 'w';
     char arg2 = 'z';
     puts("\nTesting function num_in_range...");
-    printf("\tResult with arg *s1=%s and b=%c, c=%c: %d\n", s, arg1, arg2, num_in_range(s, arg1, arg2));
+    printf("\tResult with arg *s1=%s and b=%c, c=%c: %d\n", test1, arg1, arg2, num_in_range(test1, arg1, arg2));
+    strcpy(test1, "Yellow");
+    arg1 = 'f';
+    arg2 = 'm'; 
+    printf("\tResult with arg *s1=%s and b=%c, c=%c: %d\n", test1, arg1, arg2, num_in_range(test1, arg1, arg2));  
     
     // Test diff
-    strcpy(test1, "Door");
-    strcpy(test2, "Doll");
+    strcpy(test1, "Book");
+    strcpy(test2, "Back");
     puts("\nTesting function diff...");
     printf("\tResult with args *s1=%s, *s2=%s: %d\n", test1, test2, diff(test1, test2));
  
     // Test shorten
-    strcpy(test1, "butterbeer");
-    n = 6;
+    strcpy(test1, "Hello World");
+    n = 5;
     puts("\nTesting function shorten...");
+    printf("\tResult with args *s= %s, new_len= %d: ", test1, n);
+    shorten(test1, n);
+    printf("%s\n", test1);
+    strcpy(test1, "Hello World");
+    n = 20;
     printf("\tResult with args *s= %s, new_len= %d: ", test1, n);
     shorten(test1, n);
     printf("%s\n", test1);
 
     // Test len_diff
-    strcpy(test2, "butterbeer");
+    strcpy(test1, "Hello");
+    strcpy(test2, "Philadelphia");
     puts("\nTesting function len_diff...");
     printf("\tResult with args *s1=%s, *s2=%s: %d\n", test2, test1, len_diff(test2, test1));
     
     // Test rm_left_space
-    strcpy(test1,  "    Tabbed String");
+    strcpy(test1,  "    Hello");
+    strcpy(test2, "Hello    ");
     puts("\nTesting function rm_left_space...");
     printf("\tResult with arg \"%s\": ", test1);
     rm_left_space(test1);
     printf("\"%s\"\n", test1);
+    printf("\tResult with arg \"%s\": ", test2);
+    rm_left_space(test2);
+    printf("\"%s\"\n", test2);
 
     // Test rm_right_space
+    strcpy(test1, "    Hello");
     strcpy(test2, "Hello    ");
     puts("\nTesting function rm_right_space...");
     printf("\tResult with arg \"%s\": ", test2);
     rm_right_space(test2);
     printf("\"%s\"\n", test2);
+    printf("\tResult with arg \"%s\": ", test1);
+    rm_right_space(test1);
+    printf("\"%s\"\n", test1);
     
     // Test rm_space
-    strcpy(test1, "    Tabbed string with space    ");
+    strcpy(test1, "    Hello    ");
     puts("\nTesting function rm_space...");
     printf("\tResult with arg \"%s\": ", test1);
     rm_space(test1);
     printf("\"%s\"\n", test1);
     
     // Test find
-    strcpy(test1, "butterbeer");
+    strcpy(test1, "Butterbeer");
     strcpy(test2, "beer");
     puts("\nTesting function find...");
     printf("\tResult with args *h=%s, *n=%s: %d\n", test1, test2, find(test1, test2));
+    strcpy(test3, "Harry");
+    printf("\tResult with args *h=%s, *n=%s: %d\n", test1, test3, find(test1, test3));
 
     // Test ptr_to
+    strcpy(test1, "Butterbeer is tasty");
     puts("\nTesting function ptr_to...");
     printf("\tResult with args *h=%s, *n=%s: %s\n", test1, test2, ptr_to(test1, test2));
+    printf("\tResult with args *h=%s, *n=%s: %s\n", test1, test3, ptr_to(test1, test3));
  
     // Test is_empty
     strcpy(test1, "   \t");
+    strcpy(test3, "");
     puts("\nTesting function is_empty...");  
     printf("\tResult with arg \"%s\": %d\n", test1, is_empty(test1));
     printf("\tResult with arg \"%s\": %d\n", test2, is_empty(test2));
+    printf("\tResult with arg \"%s\": %d\n", test3, is_empty(test3));
+    printf("\tResult with arg \"%s\": %d\n", nullstring, is_empty(nullstring));
 
     // Test str_zip
     strcpy(test1, "Spongebob");
@@ -201,11 +225,15 @@ int main(){
     alpha = ' ';
     puts("\nTesting str_chop_all");
     char **tokens = str_chop_all(test1, alpha); 
+    t = tokens;
     printf("\tResult with args *s=\"%s\", c='%c':\n\t", test1, alpha);
     while(*tokens != NULL){
         printf(" \"%s\"", *tokens);
         tokens++;
     }
     puts("");
+    free(t);
+    tokens = NULL;
+    t = NULL;
     return 0;
 }

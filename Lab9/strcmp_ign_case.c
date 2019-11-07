@@ -4,7 +4,7 @@
 */
 #include "my_string.h"
 
-// Compares s1 and s2 ignoring case
+// Compares s1 and s2 ignoring case. Returns 0 if equal, positive if s1 > s2, or negative if s1 < s2.
 int strcmp_ign_case(char *s1, char *s2){
     int diff;
     while(*s1 != '\0' && *s2 != '\0'){

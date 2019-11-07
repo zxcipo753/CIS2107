@@ -11,14 +11,14 @@ void capitalize(char *s){
     while(*s != '\0'){
         if( !inWord && isalpha(*s)){
             if(islower(*s))
-               *s -= 32;
+               *s -= 32; // convert to uppercase
             inWord = 1;
         }
         else if(inWord){
             if(isspace(*s) || ispunct(*s))
                 inWord = 0;
             if(isupper(*s))
-                *s += 32;
+                *s += 32; // convert to lowercase
         }
         s++;
     }

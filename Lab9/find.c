@@ -15,7 +15,7 @@ int find(char *h, char *n){
                 if(*(h + i + j) != *(n + j))
                     loc = -1;
             }
-            if(loc = i)
+            if(loc == i) // if loc still == i, then substring is found
                 return loc;
         }
     }

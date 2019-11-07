@@ -7,15 +7,11 @@
 // returns the number of positions in which s1 and s2 differ
 int diff(char *s1, char *s2){
     int count = 0;
-//    int s1_len = 0;
-//    int s2_len = 0;
     while(*s1 != '\0' && *s2 != '\0'){
         if(*s1 != *s2)
             count++;
         s1++;
         s2++;
-//        s1_len++;
-//        s2_len++;
     }
     // test if the strings were the same length and add any extra letters to count
     if(*s1 == '\0' && *s2 == '\0')

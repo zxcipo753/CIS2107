@@ -23,11 +23,11 @@ void rm_empties(char **words){
         }
         temp++;
     }
-    temp = words;
+    temp = words; // set temp to location of words
     for(size_t i = 0; i < num; i++){
         *temp = nonEmpty[i];
         temp++;
     }
-    *temp = NULL;
+    *temp = NULL; // terminate
 }
         

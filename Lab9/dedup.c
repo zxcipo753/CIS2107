@@ -11,12 +11,13 @@
 char *dedup(char *s){
     int s_len = 0;
     int index = 0;
-    int counts[ASCII] = {0};
+    int counts[ASCII] = {0}; // keep track of how many times each character has been seen
 
     for(; *(s + s_len) != '\0'; s_len++);
 
-    char *ptr = (char *) malloc(sizeof(char) * s_len);  // Allocate memory assuming every character in s is unique
-   
+    char *ptr = NULL;
+    if((ptr = (char *) malloc(sizeof(char) * s_len)) == NULL)  // Allocate memory assuming every character in s is unique
+        return ptr;
     while(*s != '\0'){
         if(counts[*s] == 0){ // *s has not been seen before
             *(ptr + index++) = *s;

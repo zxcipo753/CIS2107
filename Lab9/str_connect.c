@@ -22,7 +22,8 @@ char *str_connect(char **strs, int n, char c){
     for(size_t i = 0; i < n; i++) // sum all lengths
         total_len += lens[i];
     
-    ptr = (char *)malloc(sizeof(char) * (total_len + (n - 1)));
+    if((ptr = (char *)malloc(sizeof(char) * (total_len + (n - 1)))) == NULL)
+        return ptr;
     char *t = ptr;
     // Copy n strings and separators into ptr
     for(size_t i = 0; i < n; i++){ 

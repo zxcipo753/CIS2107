@@ -21,7 +21,9 @@ char *str_zip(char *s1, char *s2){
     else if(s1_len != 0 && s2_len == 0)
         return s1;
     else{
-        char *newString = (char *) malloc(sizeof(char) *(s1_len + s2_len));
+        char *newString = NULL;
+        if((newString = (char *) malloc(sizeof(char) *(s1_len + s2_len))) == NULL)
+            return newString;
         int i = 0;
         if(s1_len == s2_len){ // strings are same length, alternate letters from each
             for(; i < s1_len + s2_len; i++)

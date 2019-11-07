@@ -2,6 +2,8 @@
    "String Library"
    Christopher Scott
 */
+#ifndef my_string
+#define my_string
 #include <stdio.h>
 
 int all_letters(char *s);
@@ -27,3 +29,5 @@ char *replace(char *s, char *pat, char *rep);
 char *str_connect(char **strs, int n, char c);
 void rm_empties(char **words);
 char **str_chop_all(char *s, char c);
+
+#endif /* my_string */

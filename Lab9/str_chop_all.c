@@ -19,15 +19,19 @@ char **str_chop_all(char *s, char c){
     if(count == 0)
         return tokens;
 
-    tokens = (char **)malloc(sizeof(char*) * (count + 2));
+    if((tokens = (char **)malloc(sizeof(char*) * (count + 2))) == NULL)
+        return tokens;
     char **temp = tokens;
     while(*s != '\0'){
         int len = 0;
-        while(*s != c && *s != '\0')
+        while(*s != c && *s != '\0') // add characters to buffer until delimiter or end of string
             buffer[len++] = *s++;
         buffer[len] = '\0';
         len = 0;
-        *temp = (char *)malloc(sizeof(char*));
+        if((*temp = (char *)malloc(sizeof(char*))) == NULL){
+            tokens = NULL;
+            return tokens;
+        }
         for(int i = 0; (*(*temp + i) = *(buffer + i)) != '\0'; i++); // copy buffer into temp
         temp++;
         if(*s != '\0')

@@ -14,17 +14,19 @@ char *repeat(char *s, int x, char sep){
 	
 	if(s_len == 0)
             return ptr;
-	ptr = (char *)malloc(sizeof(char) * ((s_len * x) + x));
+	if((ptr = (char *)malloc(sizeof(char) * ((s_len * x) + x))) == NULL)
+             return ptr;
         char *t = ptr;
 	for(size_t i = 0; i < x; i++){
-	    for(size_t j = 0; *(s + j) != '\0'; j++){
+	    for(size_t j = 0; *(s + j) != '\0'; j++){ // copy s into t
 	        *t = *(s + j);
                 t++;
 	    }
-            if(i < x - 1){
+            if(i < x - 1){ // add the separator if not the last repetition
 	        *t = sep;
 		t++;
 	    }
 	}
+        *t = '\0';
 	return ptr;
 }
